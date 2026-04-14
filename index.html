@@ -2,15 +2,97 @@
 <html>
 <head>
   <title>Anniversary Card Generator</title>
+  <link rel="stylesheet" href="styles.css">
   <style>
-    body { font-family: Arial; text-align: center; background: #ffe6e6; }
+    body { 
+      font-family: Arial, sans-serif; 
+      text-align: center; 
+      background: #ffe6e6;
+      padding: 20px;
+    }
+    .controls {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: 20px auto;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 14px;
+    }
+    button {
+      background: #ff6b9d;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 5px;
+      font-size: 14px;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #c44569;
+    }
     .card {
       margin-top: 20px;
-      padding: 20px;
+      padding: 30px;
       border-radius: 15px;
       background: white;
       display: inline-block;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      max-width: 500px;
+    }
+    .card img {
+      width: 200px;
+      height: 200px;
+      border-radius: 10px;
+      object-fit: cover;
+      margin: 10px 0;
+    }
+    .card h2 {
+      color: #ff6b9d;
+      margin-bottom: 10px;
+    }
+    .card h3 {
+      color: #c44569;
+      margin: 5px 0;
+    }
+    .card p {
+      font-size: 16px;
+      margin: 8px 0;
+      line-height: 1.6;
+    }
+    .names {
+      font-size: 18px;
+      font-weight: bold;
+      color: #333;
+    }
+    .year-diff {
+      font-size: 24px;
+      color: #ff6b9d;
+      font-weight: bold;
+      margin: 10px 0;
+    }
+    .link-container {
+      background: #f5f5f5;
+      padding: 15px;
+      border-radius: 8px;
+      margin: 20px 0;
+      word-break: break-all;
+    }
+    .link-container a {
+      color: #ff6b9d;
+      text-decoration: none;
+    }
+    .link-container a:hover {
+      text-decoration: underline;
     }
   </style>
 </head>
@@ -18,11 +100,21 @@
 
 <h1>💑 Anniversary Card Generator</h1>
 
-<input id="name" placeholder="Name"><br><br>
-<input id="year" placeholder="Years"><br><br>
-<input id="msg" placeholder="Message"><br><br>
-
-<button onclick="generate()">Generate Card</button>
+<div class="controls">
+  <h3>Create Your Anniversary Card</h3>
+  
+  <input id="name1" placeholder="First Person Name" required><br>
+  <input id="name2" placeholder="Second Person Name" required><br>
+  
+  <input id="year" placeholder="Years Together (e.g., 5)" type="number" required><br>
+  
+  <input id="photo" type="file" accept="image/*"><br>
+  
+  <textarea id="msg" placeholder="Your Anniversary Message" rows="4"></textarea><br>
+  
+  <button onclick="generate()">💕 Generate Card</button>
+  <button onclick="copyLink()">📋 Copy Link</button>
+</div>
 
 <p id="link"></p>
 
@@ -30,25 +122,79 @@
 
 <script>
 function generate() {
-  const name = document.getElementById("name").value;
+  const name1 = document.getElementById("name1").value;
+  const name2 = document.getElementById("name2").value;
   const year = document.getElementById("year").value;
   const msg = document.getElementById("msg").value;
+  const photoInput = document.getElementById("photo");
 
-  const url = `${window.location.origin}?name=${name}&year=${year}&msg=${msg}`;
-  document.getElementById("link").innerHTML = `<a href="${url}">${url}</a>`;
+  if (!name1 || !name2 || !year) {
+    alert('Please fill in all required fields!');
+    return;
+  }
+
+  let photoData = '';
+  if (photoInput.files && photoInput.files[0]) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      photoData = e.target.result;
+      createCard(name1, name2, year, msg, photoData);
+      generateShareLink(name1, name2, year, msg);
+    };
+    reader.readAsDataURL(photoInput.files[0]);
+  } else {
+    createCard(name1, name2, year, msg, '');
+    generateShareLink(name1, name2, year, msg);
+  }
+}
+
+function createCard(name1, name2, year, msg, photo) {
+  const yearDiff = parseInt(year);
+  let cardHTML = `
+    <div class="card">
+      <h2>💖 Happy Anniversary 💖</h2>
+  `;
+  
+  if (photo) {
+    cardHTML += `<img src="${photo}" alt="Anniversary Photo"><br>`;
+  }
+  
+  cardHTML += `
+      <div class="names">${name1} 💕 ${name2}</div>
+      <div class="year-diff">${yearDiff} Year${yearDiff > 1 ? 's' : ''} Together</div>
+      <p>${msg || 'Celebrating our love and commitment!'}</p>
+    </div>
+  `;
+  
+  document.getElementById("card").innerHTML = cardHTML;
+}
+
+function generateShareLink(name1, name2, year, msg) {
+  const url = `${window.location.origin}${window.location.pathname}?name1=${encodeURIComponent(name1)}&name2=${encodeURIComponent(name2)}&year=${year}&msg=${encodeURIComponent(msg)}`;
+  document.getElementById("link").innerHTML = `
+    <div class="link-container">
+      <strong>Share this link:</strong><br>
+      <a href="${url}" target="_blank">${url}</a>
+    </div>
+  `;
+}
+
+function copyLink() {
+  const linkText = document.querySelector('.link-container a').textContent;
+  navigator.clipboard.writeText(linkText).then(() => {
+    alert('Link copied to clipboard!');
+  });
 }
 
 // Auto load card from URL
 const params = new URLSearchParams(window.location.search);
-if(params.get("name")) {
-  document.getElementById("card").innerHTML = `
-    <div class="card">
-      <h2>💖 Happy Anniversary 💖</h2>
-      <h3>${params.get("name")}</h3>
-      <p>${params.get("year")} Years Together</p>
-      <p>${params.get("msg")}</p>
-    </div>
-  `;
+if(params.get("name1") && params.get("name2")) {
+  const name1 = params.get("name1");
+  const name2 = params.get("name2");
+  const year = params.get("year");
+  const msg = params.get("msg");
+  
+  createCard(name1, name2, year, msg, '');
 }
 </script>
 
