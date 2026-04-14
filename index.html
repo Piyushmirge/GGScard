@@ -4,25 +4,43 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Work Anniversary Card Generator</title>
-    <link rel="stylesheet" href="styles.css">
+    <style>
+        body { font-family: Arial, sans-serif; }
+        /* Add mobile responsiveness and dark mode styles here */
+        .dark-mode { background-color: #111; color: #fff; }
+        /* Other styles for backgrounds, form, etc. */
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1>Work Anniversary Card Generator</h1>
-        <form id="work-anniversary-form">
-            <label for="members">Select Members:</label>
-            <input type="text" id="members" name="members" placeholder="Enter member names, separated by commas">
-            <label for="photos">Upload Photos:</label>
-            <input type="file" id="photos" name="photos" multiple accept="image/*">
-            <label for="background">Select Professional Background:</label>
-            <select id="background" name="background">
-                <option value="background1">Background 1</option>
-                <option value="background2">Background 2</option>
-                <option value="background3">Background 3</option>
+    <h1>Work Anniversary Card Generator</h1>
+    <button id="toggle-dark-mode">Toggle Dark Mode</button>
+    <form id="card-form">
+        <div id="team-members">
+            <div class="member">
+                <input type="text" placeholder="Team Member Name" required>
+                <input type="text" placeholder="Job Title" required>
+                <input type="file" accept="image/*" required>
+                <input type="number" placeholder="Years in Company" required>
+                <textarea placeholder="Appreciation Message" required></textarea>
+                <button type="button" class="remove-member">Remove Member</button>
+            </div>
+        </div>
+        <button type="button" id="add-member">Add Team Member</button>
+        <div>
+            <label>Background Style:</label>
+            <select id="background-style">
+                <option value="blue">Blue</option>
+                <option value="gray">Gray</option>
+                <option value="gold">Gold</option>
             </select>
-            <button type="submit">Generate Card</button>
-        </form>
-    </div>
-    <script src="script.js"></script>
+        </div>
+        <button type="submit">Generate Card</button>
+    </form>
+    <div id="generated-cards"></div>
+    
+    <script>
+        // Add JavaScript for dynamic member addition/removal, dark mode toggling,
+        // card generation logic, and mobile responsiveness.
+    </script>
 </body>
 </html>
