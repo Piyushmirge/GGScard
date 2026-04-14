@@ -1,21 +1,56 @@
-<!-- Link to CSS -->
-<link rel="stylesheet" href="styles.css">
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Anniversary Card Generator</title>
+  <style>
+    body { font-family: Arial; text-align: center; background: #ffe6e6; }
+    .card {
+      margin-top: 20px;
+      padding: 20px;
+      border-radius: 15px;
+      background: white;
+      display: inline-block;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
 
-<!-- Link to JavaScript -->
-<script src="script.js" defer></script>
+<h1>💑 Anniversary Card Generator</h1>
 
-<!-- Input fields for templates and color customization -->
-<select id="template-selection">
-    <option value="template1">Template 1</option>
-    <option value="template2">Template 2</option>
-</select>
-<input type="color" id="color-customization" value="#ffffff">
+<input id="name" placeholder="Couple Name"><br><br>
+<input id="year" placeholder="Years"><br><br>
+<input id="msg" placeholder="Message"><br><br>
 
-<!-- Dark mode toggle button -->
-<button id="dark-mode-toggle">Toggle Dark Mode</button>
+<button onclick="generate()">Generate Link</button>
 
-<!-- Action buttons -->
-<button id="generate-link">Generate Link</button>
-<button id="copy-link">Copy Link</button>
-<button id="download-card">Download Card</button>
-<button id="share-social-media">Share to Social Media</button>
+<p id="link"></p>
+
+<div id="card"></div>
+
+<script>
+function generate() {
+  const name = document.getElementById("name").value;
+  const year = document.getElementById("year").value;
+  const msg = document.getElementById("msg").value;
+
+  const url = `${window.location.origin}?name=${name}&year=${year}&msg=${msg}`;
+  document.getElementById("link").innerHTML = `<a href="${url}">${url}</a>`;
+}
+
+// Auto load card from URL
+const params = new URLSearchParams(window.location.search);
+if(params.get("name")) {
+  document.getElementById("card").innerHTML = `
+    <div class="card">
+      <h2>💖 Happy Anniversary 💖</h2>
+      <h3>${params.get("name")}</h3>
+      <p>${params.get("year")} Years Together</p>
+      <p>${params.get("msg")}</p>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>
