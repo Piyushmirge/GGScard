@@ -3,51 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dual Card Types</title>
+    <title>Work Anniversary Card Generator</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <header>
-        <h1>Card Types</h1>
-    </header>
-    <main>
-        <section class="cards">
-            <div class="card anniversary">
-                <h2>Anniversary</h2>
-                <div class="photos">
-                    <img src="anniversary1.jpg" alt="Anniversary Celebration 1">
-                    <img src="anniversary2.jpg" alt="Anniversary Celebration 2">
-                </div>
-                <p>Celebrate your special day with love and joy!</p>
-                <div class="team-members">
-                    <p>Members:</p>
-                    <ul>
-                        <li>John Doe</li>
-                        <li>Jane Smith</li>
-                    </ul>
-                </div>
-            </div>
-            <div class="card work">
-                <h2>Work</h2>
-                <div class="photos">
-                    <img src="work1.jpg" alt="Work Event 1">
-                    <img src="work2.jpg" alt="Work Event 2">
-                    <img src="work3.jpg" alt="Work Event 3">
-                </div>
-                <p>Teamwork makes the dream work!</p>
-                <div class="team-members">
-                    <p>Members:</p>
-                    <ul>
-                        <li>Alex Brown</li>
-                        <li>Emma Wilson</li>
-                        <li>Chris Johnson</li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-    </main>
-    <footer>
-        <p>© 2026 Your Company</p>
-    </footer>
+    <div class="container">
+        <h1>Work Anniversary Card Generator</h1>
+        <form id="work-anniversary-form">
+            <label for="members">Select Members:</label>
+            <input type="text" id="members" name="members" placeholder="Enter member names, separated by commas">
+            <label for="photos">Upload Photos:</label>
+            <input type="file" id="photos" name="photos" multiple accept="image/*">
+            <label for="background">Select Professional Background:</label>
+            <select id="background" name="background">
+                <option value="background1">Background 1</option>
+                <option value="background2">Background 2</option>
+                <option value="background3">Background 3</option>
+            </select>
+            <button type="submit">Generate Card</button>
+        </form>
+    </div>
+    <script src="script.js"></script>
 </body>
 </html>
