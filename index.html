@@ -7,22 +7,53 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
+    <div class="app">
         <h1>Work Anniversary Card Generator</h1>
-        <form id="work-anniversary-form">
-            <label for="members">Select Members:</label>
-            <input type="text" id="members" name="members" placeholder="Enter member names, separated by commas">
-            <label for="photos">Upload Photos:</label>
-            <input type="file" id="photos" name="photos" multiple accept="image/*">
-            <label for="background">Select Professional Background:</label>
-            <select id="background" name="background">
-                <option value="background1">Background 1</option>
-                <option value="background2">Background 2</option>
-                <option value="background3">Background 3</option>
+        <div id="teamMembers">
+            <label for="members">Add Team Members:</label>
+            <input type="text" id="members" placeholder="Enter names, comma-separated">
+            <input type="date" id="joiningDate" placeholder="Joining Date">
+            <input type="file" id="photoUpload" accept="image/*">
+        </div>
+        <div>
+            <label for="backgroundColor">Select Background Color:</label>
+            <select id="backgroundColor">
+                <option value="blue">Blue</option>
+                <option value="gray">Gray</option>
+                <option value="gold">Gold</option>
             </select>
-            <button type="submit">Generate Card</button>
-        </form>
+        </div>
+        <textarea id="appreciationMessage" placeholder="Enter appreciation message..."></textarea>
+        <button id="generateCard">Generate Card</button>
+        <button id="share">Share</button>
+        <div id="cardOutput"></div>
     </div>
-    <script src="script.js"></script>
+
+    <script>
+        document.getElementById('generateCard').addEventListener('click', function() {
+            const members = document.getElementById('members').value.split(',');
+            const joiningDateInput = new Date(document.getElementById('joiningDate').value);
+            const today = new Date();
+            const dateDiff = Math.floor((today - joiningDateInput) / (1000 * 60 * 60 * 24 * 365.25));
+            const message = document.getElementById('appreciationMessage').value;
+            const backgroundColor = document.getElementById('backgroundColor').value;
+
+            let cardHtml = `\n                <div class='card' style='background-color: ${backgroundColor};'>\n                    <h2>Happy Work Anniversary!</h2>\n                    <p>Celebrating ${dateDiff} years with our team!</p>\n                    <p>Members: ${members.join(', ')}</p>\n                    <p>${message}</p>\n                </div>\n            `;
+
+            document.getElementById('cardOutput').innerHTML = cardHtml;
+        });
+
+        document.getElementById('share').addEventListener('click', function() {
+            const cardContent = document.getElementById('cardOutput').innerHTML;
+            navigator.clipboard.writeText(cardContent).then(() => {
+                alert('Card copied to clipboard!');
+            });
+        });
+    </script>
+    <style>
+        body { font-family: Arial, sans-serif; color: #333; }
+        .app { max-width: 600px; margin: auto; padding: 1rem; }
+        .card { padding: 1rem; margin-top: 1rem; border-radius: 5px; color: white; }
+    </style>
 </body>
 </html>
