@@ -3,21 +3,20 @@
 <head>
   <title>Work Anniversary Card</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: Arial;
       text-align: center;
-      background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+      background: linear-gradient(135deg, #e0f2fe, #f8fafc);
       padding: 20px;
     }
 
-    h1 { color: #1e3a8a; }
-
     input {
       padding: 10px;
-      margin: 8px;
+      margin: 6px;
       width: 80%;
-      max-width: 300px;
+      max-width: 320px;
       border-radius: 8px;
       border: 1px solid #ccc;
     }
@@ -37,22 +36,28 @@
       border-radius: 15px;
       background: white;
       display: inline-block;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
       max-width: 350px;
     }
 
-    .badge {
-      font-size: 40px;
+    img {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 10px;
     }
   </style>
 </head>
 <body>
 
-<h1>🎉 Work Anniversary Generator</h1>
+<h2>🎉 Work Anniversary Generator</h2>
 
 <input id="name" placeholder="Employee Name"><br>
-<input id="years" placeholder="Years in Company"><br>
+<input id="from" placeholder="From (Sender Name)"><br>
 <input id="company" placeholder="Company Name"><br>
+<input id="start" type="date"><br>
+<input id="photo" type="file"><br>
 <input id="msg" placeholder="Message"><br>
 
 <button onclick="generate()">Generate Link</button>
@@ -62,29 +67,58 @@
 <div id="card"></div>
 
 <script>
-function generate() {
-  const name = encodeURIComponent(document.getElementById("name").value);
-  const years = encodeURIComponent(document.getElementById("years").value);
-  const company = encodeURIComponent(document.getElementById("company").value);
-  const msg = encodeURIComponent(document.getElementById("msg").value);
+let imageBase64 = "";
 
-  const url = `${window.location.origin}?name=${name}&years=${years}&company=${company}&msg=${msg}`;
-  document.getElementById("link").innerHTML =
-    `<a href="${url}" target="_blank">${url}</a>`;
+// Convert image to base64
+document.getElementById("photo").addEventListener("change", function() {
+  const file = this.files[0];
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    imageBase64 = e.target.result;
+  };
+  reader.readAsDataURL(file);
+});
+
+function calculateYears(startDate) {
+  const start = new Date(startDate);
+  const today = new Date();
+  let years = today.getFullYear() - start.getFullYear();
+
+  const m = today.getMonth() - start.getMonth();
+  if (m < 0 || (m === 0 && today.getDate() < start.getDate())) {
+    years--;
+  }
+  return years;
 }
 
-// Load card from URL
+function generate() {
+  const name = encodeURIComponent(document.getElementById("name").value);
+  const from = encodeURIComponent(document.getElementById("from").value);
+  const company = encodeURIComponent(document.getElementById("company").value);
+  const start = document.getElementById("start").value;
+  const msg = encodeURIComponent(document.getElementById("msg").value);
+
+  const years = calculateYears(start);
+
+  const url = `${window.location.origin}?name=${name}&from=${from}&company=${company}&years=${years}&msg=${msg}&img=${encodeURIComponent(imageBase64)}`;
+
+  document.getElementById("link").innerHTML =
+    `<a href="${url}" target="_blank">Share Card</a>`;
+}
+
+// Load card
 const params = new URLSearchParams(window.location.search);
 
 if (params.get("name")) {
   document.getElementById("card").innerHTML = `
     <div class="card">
-      <div class="badge">🏆</div>
-      <h2>Happy Work Anniversary!</h2>
+      <img src="${params.get("img") || ''}" />
+      <h2>🏆 Happy Work Anniversary</h2>
       <h3>${params.get("name")}</h3>
-      <p>🎯 ${params.get("years")} Years at ${params.get("company")}</p>
+      <p>🎯 ${params.get("years")} Years</p>
+      <p>🏢 ${params.get("company")}</p>
       <p>💬 ${params.get("msg")}</p>
-      <p>👏 Thank you for your dedication!</p>
+      <p>— From ${params.get("from")}</p>
     </div>
   `;
 }
