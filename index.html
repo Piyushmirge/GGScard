@@ -1,46 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Anniversary Card Generator</title>
+    <title>Work Anniversary Card</title>
     <style>
         body { font-family: Arial, sans-serif; }
-        /* Add mobile responsiveness and dark mode styles here */
-        .dark-mode { background-color: #111; color: #fff; }
-        /* Other styles for backgrounds, form, etc. */
+        .team-member { border: 2px solid #ccc; margin: 10px; padding: 10px; border-radius: 5px; }
+        .team-member img { height: 100px; width: auto; border-radius: 50%; }
     </style>
 </head>
 <body>
-    <h1>Work Anniversary Card Generator</h1>
-    <button id="toggle-dark-mode">Toggle Dark Mode</button>
-    <form id="card-form">
-        <div id="team-members">
-            <div class="member">
-                <input type="text" placeholder="Team Member Name" required>
-                <input type="text" placeholder="Job Title" required>
-                <input type="file" accept="image/*" required>
-                <input type="number" placeholder="Years in Company" required>
-                <textarea placeholder="Appreciation Message" required></textarea>
-                <button type="button" class="remove-member">Remove Member</button>
-            </div>
-        </div>
-        <button type="button" id="add-member">Add Team Member</button>
-        <div>
-            <label>Background Style:</label>
-            <select id="background-style">
-                <option value="blue">Blue</option>
-                <option value="gray">Gray</option>
-                <option value="gold">Gold</option>
-            </select>
-        </div>
-        <button type="submit">Generate Card</button>
-    </form>
-    <div id="generated-cards"></div>
-    
-    <script>
-        // Add JavaScript for dynamic member addition/removal, dark mode toggling,
-        // card generation logic, and mobile responsiveness.
-    </script>
+    <h1>Work Anniversary Cards</h1>
+    <div class="team-member">
+        <img src="path_to_photo_1.jpg" alt="Team Member 1">
+        <h2>John Doe</h2>
+        <p>Joining Date: 2022-04-15</p>
+        <p>Professional Background: Software Engineer</p>
+        <p>Appreciation Message: Thank you for your hard work and dedication!</p>
+    </div>
+    <div class="team-member">
+        <img src="path_to_photo_2.jpg" alt="Team Member 2">
+        <h2>Jane Smith</h2>
+        <p>Joining Date: 2021-04-15</p>
+        <p>Professional Background: Project Manager</p>
+        <p>Appreciation Message: Your leadership and vision are invaluable!</p>
+    </div>
+    <div class="team-member">
+        <img src="path_to_photo_3.jpg" alt="Team Member 3">
+        <h2>Emily Johnson</h2>
+        <p>Joining Date: 2020-04-15</p>
+        <p>Professional Background: Designer</p>
+        <p>Appreciation Message: Your creativity and passion shine through in every project!</p>
+    </div>
 </body>
 </html>
