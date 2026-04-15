@@ -1,59 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Work Anniversary Card Generator</title>
-    <link rel="stylesheet" href="styles.css">
+  <title>Work Anniversary Card</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+      padding: 20px;
+    }
+
+    h1 { color: #1e3a8a; }
+
+    input {
+      padding: 10px;
+      margin: 8px;
+      width: 80%;
+      max-width: 300px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .card {
+      margin-top: 20px;
+      padding: 25px;
+      border-radius: 15px;
+      background: white;
+      display: inline-block;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      max-width: 350px;
+    }
+
+    .badge {
+      font-size: 40px;
+    }
+  </style>
 </head>
 <body>
-    <div class="app">
-        <h1>Work Anniversary Card Generator</h1>
-        <div id="teamMembers">
-            <label for="members">Add Team Members:</label>
-            <input type="text" id="members" placeholder="Enter names, comma-separated">
-            <input type="date" id="joiningDate" placeholder="Joining Date">
-            <input type="file" id="photoUpload" accept="image/*">
-        </div>
-        <div>
-            <label for="backgroundColor">Select Background Color:</label>
-            <select id="backgroundColor">
-                <option value="blue">Blue</option>
-                <option value="gray">Gray</option>
-                <option value="gold">Gold</option>
-            </select>
-        </div>
-        <textarea id="appreciationMessage" placeholder="Enter appreciation message..."></textarea>
-        <button id="generateCard">Generate Card</button>
-        <button id="share">Share</button>
-        <div id="cardOutput"></div>
+
+<h1>🎉 Work Anniversary Generator</h1>
+
+<input id="name" placeholder="Employee Name"><br>
+<input id="years" placeholder="Years in Company"><br>
+<input id="company" placeholder="Company Name"><br>
+<input id="msg" placeholder="Message"><br>
+
+<button onclick="generate()">Generate Link</button>
+
+<p id="link"></p>
+
+<div id="card"></div>
+
+<script>
+function generate() {
+  const name = encodeURIComponent(document.getElementById("name").value);
+  const years = encodeURIComponent(document.getElementById("years").value);
+  const company = encodeURIComponent(document.getElementById("company").value);
+  const msg = encodeURIComponent(document.getElementById("msg").value);
+
+  const url = `${window.location.origin}?name=${name}&years=${years}&company=${company}&msg=${msg}`;
+  document.getElementById("link").innerHTML =
+    `<a href="${url}" target="_blank">${url}</a>`;
+}
+
+// Load card from URL
+const params = new URLSearchParams(window.location.search);
+
+if (params.get("name")) {
+  document.getElementById("card").innerHTML = `
+    <div class="card">
+      <div class="badge">🏆</div>
+      <h2>Happy Work Anniversary!</h2>
+      <h3>${params.get("name")}</h3>
+      <p>🎯 ${params.get("years")} Years at ${params.get("company")}</p>
+      <p>💬 ${params.get("msg")}</p>
+      <p>👏 Thank you for your dedication!</p>
     </div>
+  `;
+}
+</script>
 
-    <script>
-        document.getElementById('generateCard').addEventListener('click', function() {
-            const members = document.getElementById('members').value.split(',');
-            const joiningDateInput = new Date(document.getElementById('joiningDate').value);
-            const today = new Date();
-            const dateDiff = Math.floor((today - joiningDateInput) / (1000 * 60 * 60 * 24 * 365.25));
-            const message = document.getElementById('appreciationMessage').value;
-            const backgroundColor = document.getElementById('backgroundColor').value;
-
-            let cardHtml = `\n                <div class='card' style='background-color: ${backgroundColor};'>\n                    <h2>Happy Work Anniversary!</h2>\n                    <p>Celebrating ${dateDiff} years with our team!</p>\n                    <p>Members: ${members.join(', ')}</p>\n                    <p>${message}</p>\n                </div>\n            `;
-
-            document.getElementById('cardOutput').innerHTML = cardHtml;
-        });
-
-        document.getElementById('share').addEventListener('click', function() {
-            const cardContent = document.getElementById('cardOutput').innerHTML;
-            navigator.clipboard.writeText(cardContent).then(() => {
-                alert('Card copied to clipboard!');
-            });
-        });
-    </script>
-    <style>
-        body { font-family: Arial, sans-serif; color: #333; }
-        .app { max-width: 600px; margin: auto; padding: 1rem; }
-        .card { padding: 1rem; margin-top: 1rem; border-radius: 5px; color: white; }
-    </style>
 </body>
 </html>
