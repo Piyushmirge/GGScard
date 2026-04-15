@@ -8,7 +8,7 @@
     body {
       font-family: Arial;
       text-align: center;
-      background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+      background: #f1f5f9;
     }
 
     .employee-form {
@@ -52,10 +52,10 @@
       cursor: pointer;
     }
 
-    /* 🎨 Card with background */
+    /* 🎨 CARD WITH YOUR IMAGE BACKGROUND */
     .card {
-      background: /images/bg.jpg(135deg, #1e3a8a, #3b82f6);
-      color: white;
+      background: url('bg.jpg') no-repeat center center;
+      background-size: cover;
       padding: 20px;
       margin: 15px;
       border-radius: 20px;
@@ -63,6 +63,21 @@
       width: 260px;
       position: relative;
       box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+      overflow: hidden;
+    }
+
+    /* Overlay for readability */
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(255,255,255,0.75);
+      border-radius: 20px;
+    }
+
+    .card * {
+      position: relative;
+      z-index: 2;
     }
 
     .logo {
@@ -78,7 +93,7 @@
       border-radius: 50%;
       object-fit: cover;
       margin-top: 20px;
-      border: 3px solid white;
+      border: 3px solid #333;
     }
 
     .download-btn {
@@ -98,7 +113,6 @@
 
 <div id="cards"></div>
 
-<!-- html2canvas -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <script>
@@ -159,8 +173,8 @@ function generateCards() {
       card.className = "card";
 
       card.innerHTML = `
-        <!-- 🏢 Replace this with your real logo URL -->
-        <img class="logo" src="https://ggsengg.com//60?text=GGS">
+        <!-- 🏢 Replace with your actual logo -->
+        <img class="logo" src="logo.png">
 
         <img class="profile" src="${e.target.result}">
         <h3>${name}</h3>
@@ -180,8 +194,7 @@ function generateCards() {
 function downloadCard(btn) {
   const card = btn.parentElement;
 
-  // Hide button before capture
-  btn.style.display = "none";
+  btn.style.display = "none"; // hide button
 
   html2canvas(card).then(canvas => {
     const link = document.createElement("a");
@@ -189,12 +202,11 @@ function downloadCard(btn) {
     link.href = canvas.toDataURL();
     link.click();
 
-    // Show button again after download
-    btn.style.display = "block";
+    btn.style.display = "block"; // show again
   });
 }
 
-// Default form
+// default one form
 addEmployee();
 </script>
 
