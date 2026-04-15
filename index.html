@@ -7,9 +7,26 @@
   <style>
     body {
       font-family: Arial;
-      background: #f1f5f9;
       text-align: center;
-      padding: 20px;
+      overflow-x: hidden;
+      background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+    }
+
+    /* 🎈 Balloon animation */
+    .balloon {
+      position: fixed;
+      bottom: -100px;
+      width: 40px;
+      height: 50px;
+      background: red;
+      border-radius: 50%;
+      animation: float 10s linear infinite;
+      opacity: 0.7;
+    }
+
+    @keyframes float {
+      from { transform: translateY(0); }
+      to { transform: translateY(-120vh); }
     }
 
     .employee-form {
@@ -19,6 +36,20 @@
       border-radius: 10px;
       max-width: 350px;
       box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .remove-btn {
+      position: absolute;
+      top: 5px;
+      right: 10px;
+      background: red;
+      color: white;
+      border: none;
+      border-radius: 50%;
+      width: 25px;
+      height: 25px;
+      cursor: pointer;
     }
 
     input {
@@ -68,7 +99,19 @@
 
 <div id="cards"></div>
 
-<!-- html2canvas CDN -->
+<!-- Balloons -->
+<script>
+for(let i=0;i<15;i++){
+  const b=document.createElement("div");
+  b.className="balloon";
+  b.style.left=Math.random()*100+"vw";
+  b.style.background=`hsl(${Math.random()*360},70%,60%)`;
+  b.style.animationDuration=(6+Math.random()*5)+"s";
+  document.body.appendChild(b);
+}
+</script>
+
+<!-- html2canvas -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <script>
@@ -79,7 +122,10 @@ function addEmployee() {
 
   const form = document.createElement("div");
   form.className = "employee-form";
+  form.id = "form-" + id;
+
   form.innerHTML = `
+    <button class="remove-btn" onclick="removeEmployee(${id})">×</button>
     <input placeholder="Employee Name" id="name-${id}">
     <input type="date" id="date-${id}">
     <input type="file" id="photo-${id}">
@@ -87,8 +133,12 @@ function addEmployee() {
   `;
 
   document.getElementById("forms").appendChild(form);
-
   employees.push(id);
+}
+
+function removeEmployee(id) {
+  document.getElementById("form-" + id).remove();
+  employees = employees.filter(e => e !== id);
 }
 
 function calculateYears(startDate) {
@@ -147,7 +197,7 @@ function downloadCard(btn) {
   });
 }
 
-// Add first employee by default
+// Default one form
 addEmployee();
 </script>
 
