@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Team Members</title>
+    <style>
+        .team-member {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
+            text-align: center;
+        }
+        .background-blue { background-color: lightblue; }
+        .background-gray { background-color: lightgray; }
+        .background-gold { background-color: gold; }
+    </style>
+</head>
+<body>
+    <h1>Team Members</h1>
+    <div id="team-members">
+        <!-- Individual team member entries will be added here -->
+        <div class="team-member background-blue">
+            <img src="path/to/photo1.jpg" alt="Member 1" />
+            <h2>Member 1</h2>
+            <p>Joining Date: <span id="date1"></span></p>
+            <p>Message: "Great teamwork!"</p>
+        </div>
+        <div class="team-member background-gray">
+            <img src="path/to/photo2.jpg" alt="Member 2" />
+            <h2>Member 2</h2>
+            <p>Joining Date: <span id="date2"></span></p>
+            <p>Message: "Keep it up!"</p>
+        </div>
+        <div class="team-member background-gold">
+            <img src="path/to/photo3.jpg" alt="Member 3" />
+            <h2>Member 3</h2>
+            <p>Joining Date: <span id="date3"></span></p>
+            <p>Message: "You rock!"</p>
+        </div>
+    </div>
+    <script>
+        const joinDates = {
+            member1: '2023-01-10',
+            member2: '2022-10-05',
+            member3: '2021-05-20',
+        };
+
+        function calculateJoiningDuration(joinDate) {
+            const today = new Date('2026-04-15');
+            const join = new Date(joinDate);
+            const diff = today - join;
+            const years = Math.floor(diff / (1000 * 60 * 60 * 24 * 365));
+            return years;
+        }
+
+        document.getElementById('date1').innerText = `${calculateJoiningDuration(joinDates.member1)} years`;
+        document.getElementById('date2').innerText = `${calculateJoiningDuration(joinDates.member2)} years`;
+        document.getElementById('date3').innerText = `${calculateJoiningDuration(joinDates.member3)} years`;
+    </script>
+</body>
+</html>
