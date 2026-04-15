@@ -54,15 +54,14 @@
 <h2>🎉 Work Anniversary Generator</h2>
 
 <input id="name" placeholder="Employee Name"><br>
-<input id="from" placeholder="From (Sender Name)"><br>
-<input id="company" placeholder="Company Name"><br>
 <input id="start" type="date"><br>
+<input id="today" type="date"><br>
 <input id="photo" type="file"><br>
 <input id="msg" placeholder="Message"><br>
 
-<button onclick="generate()">Generate Link</button>
+<button onclick="generate()">Generate Card</button>
 
-<p id="link"></p>
+<p id="card"></p>
 
 <div id="card"></div>
 
@@ -116,7 +115,6 @@ if (params.get("name")) {
       <h2>🏆 Happy Work Anniversary</h2>
       <h3>${params.get("name")}</h3>
       <p>🎯 ${params.get("years")} Years</p>
-      <p>🏢 ${params.get("company")}</p>
       <p>💬 ${params.get("msg")}</p>
       <p>— From ${params.get("from")}</p>
     </div>
