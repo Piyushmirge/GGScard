@@ -8,25 +8,7 @@
     body {
       font-family: Arial;
       text-align: center;
-      overflow-x: hidden;
       background: linear-gradient(135deg, #dbeafe, #f0f9ff);
-    }
-
-    /* 🎈 Balloon animation */
-    .balloon {
-      position: fixed;
-      bottom: -100px;
-      width: 40px;
-      height: 50px;
-      background: red;
-      border-radius: 50%;
-      animation: float 10s linear infinite;
-      opacity: 0.7;
-    }
-
-    @keyframes float {
-      from { transform: translateY(0); }
-      to { transform: translateY(-120vh); }
     }
 
     .employee-form {
@@ -70,21 +52,38 @@
       cursor: pointer;
     }
 
+    /* 🎨 Card with background */
     .card {
-      background: white;
+      background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      color: white;
       padding: 20px;
       margin: 15px;
-      border-radius: 15px;
+      border-radius: 20px;
       display: inline-block;
-      width: 250px;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+      width: 260px;
+      position: relative;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.3);
     }
 
-    img {
+    .logo {
+      width: 60px;
+      position: absolute;
+      top: 10px;
+      left: 10px;
+    }
+
+    .profile {
       width: 80px;
       height: 80px;
       border-radius: 50%;
       object-fit: cover;
+      margin-top: 20px;
+      border: 3px solid white;
+    }
+
+    .download-btn {
+      margin-top: 10px;
+      background: #16a34a;
     }
   </style>
 </head>
@@ -98,18 +97,6 @@
 <button onclick="generateCards()">🎨 Generate Cards</button>
 
 <div id="cards"></div>
-
-<!-- Balloons -->
-<script>
-for(let i=0;i<15;i++){
-  const b=document.createElement("div");
-  b.className="balloon";
-  b.style.left=Math.random()*100+"vw";
-  b.style.background=`hsl(${Math.random()*360},70%,60%)`;
-  b.style.animationDuration=(6+Math.random()*5)+"s";
-  document.body.appendChild(b);
-}
-</script>
 
 <!-- html2canvas -->
 <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
@@ -172,11 +159,15 @@ function generateCards() {
       card.className = "card";
 
       card.innerHTML = `
-        <img src="${e.target.result}">
+        <!-- 🏢 Replace this with your real logo URL -->
+        <img class="logo" src="https://via.placeholder.com/60?text=GGS">
+
+        <img class="profile" src="${e.target.result}">
         <h3>${name}</h3>
         <p>🏆 ${years} Years</p>
         <p>${msg}</p>
-        <button onclick="downloadCard(this)">Download</button>
+
+        <button class="download-btn" onclick="downloadCard(this)">Download</button>
       `;
 
       container.appendChild(card);
@@ -189,15 +180,21 @@ function generateCards() {
 function downloadCard(btn) {
   const card = btn.parentElement;
 
+  // Hide button before capture
+  btn.style.display = "none";
+
   html2canvas(card).then(canvas => {
     const link = document.createElement("a");
     link.download = "work-anniversary.png";
     link.href = canvas.toDataURL();
     link.click();
+
+    // Show button again after download
+    btn.style.display = "block";
   });
 }
 
-// Default one form
+// Default form
 addEmployee();
 </script>
 
