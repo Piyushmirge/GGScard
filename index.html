@@ -1,51 +1,59 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Work Anniversary Card</title>
+  <title>Work Anniversary Generator</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <style>
     body {
       font-family: Arial;
+      background: #f1f5f9;
       text-align: center;
-      background: linear-gradient(135deg, #e0f2fe, #f8fafc);
       padding: 20px;
     }
 
+    .employee-form {
+      background: white;
+      padding: 15px;
+      margin: 10px auto;
+      border-radius: 10px;
+      max-width: 350px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+    }
+
     input {
-      padding: 10px;
-      margin: 6px;
-      width: 80%;
-      max-width: 320px;
-      border-radius: 8px;
+      margin: 5px;
+      padding: 8px;
+      width: 90%;
+      border-radius: 6px;
       border: 1px solid #ccc;
     }
 
     button {
-      padding: 10px 20px;
-      background: #2563eb;
-      color: white;
+      margin: 10px;
+      padding: 10px 15px;
       border: none;
       border-radius: 8px;
+      background: #2563eb;
+      color: white;
       cursor: pointer;
     }
 
     .card {
-      margin-top: 20px;
-      padding: 25px;
-      border-radius: 15px;
       background: white;
+      padding: 20px;
+      margin: 15px;
+      border-radius: 15px;
       display: inline-block;
-      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-      max-width: 350px;
+      width: 250px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.2);
     }
 
     img {
-      width: 100px;
-      height: 100px;
+      width: 80px;
+      height: 80px;
       border-radius: 50%;
       object-fit: cover;
-      margin-bottom: 10px;
     }
   </style>
 </head>
@@ -53,30 +61,35 @@
 
 <h2>🎉 Work Anniversary Generator</h2>
 
-<input id="name" placeholder="Employee Name"><br>
-<input id="start" type="date"><br>
-<input id="today" type="date"><br>
-<input id="photo" type="file"><br>
-<input id="msg" placeholder="Message"><br>
+<div id="forms"></div>
 
-<button onclick="generate()">Generate Card</button>
+<button onclick="addEmployee()">➕ Add Employee</button>
+<button onclick="generateCards()">🎨 Generate Cards</button>
 
-<p id="card"></p>
+<div id="cards"></div>
 
-<div id="card"></div>
+<!-- html2canvas CDN -->
+<script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
 
 <script>
-let imageBase64 = "";
+let employees = [];
 
-// Convert image to base64
-document.getElementById("photo").addEventListener("change", function() {
-  const file = this.files[0];
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    imageBase64 = e.target.result;
-  };
-  reader.readAsDataURL(file);
-});
+function addEmployee() {
+  const id = Date.now();
+
+  const form = document.createElement("div");
+  form.className = "employee-form";
+  form.innerHTML = `
+    <input placeholder="Employee Name" id="name-${id}">
+    <input type="date" id="date-${id}">
+    <input type="file" id="photo-${id}">
+    <input placeholder="Message" id="msg-${id}">
+  `;
+
+  document.getElementById("forms").appendChild(form);
+
+  employees.push(id);
+}
 
 function calculateYears(startDate) {
   const start = new Date(startDate);
@@ -90,36 +103,52 @@ function calculateYears(startDate) {
   return years;
 }
 
-function generate() {
-  const name = encodeURIComponent(document.getElementById("name").value);
-  const from = encodeURIComponent(document.getElementById("from").value);
-  const company = encodeURIComponent(document.getElementById("company").value);
-  const start = document.getElementById("start").value;
-  const msg = encodeURIComponent(document.getElementById("msg").value);
+function generateCards() {
+  const container = document.getElementById("cards");
+  container.innerHTML = "";
 
-  const years = calculateYears(start);
+  employees.forEach(id => {
+    const name = document.getElementById(`name-${id}`).value;
+    const date = document.getElementById(`date-${id}`).value;
+    const msg = document.getElementById(`msg-${id}`).value;
+    const file = document.getElementById(`photo-${id}`).files[0];
 
-  const url = `${window.location.origin}?name=${name}&from=${from}&company=${company}&years=${years}&msg=${msg}&img=${encodeURIComponent(imageBase64)}`;
+    const reader = new FileReader();
 
-  document.getElementById("link").innerHTML =
-    `<a href="${url}" target="_blank">Share Card</a>`;
+    reader.onload = function(e) {
+      const years = calculateYears(date);
+
+      const card = document.createElement("div");
+      card.className = "card";
+
+      card.innerHTML = `
+        <img src="${e.target.result}">
+        <h3>${name}</h3>
+        <p>🏆 ${years} Years</p>
+        <p>${msg}</p>
+        <button onclick="downloadCard(this)">Download</button>
+      `;
+
+      container.appendChild(card);
+    };
+
+    if (file) reader.readAsDataURL(file);
+  });
 }
 
-// Load card
-const params = new URLSearchParams(window.location.search);
+function downloadCard(btn) {
+  const card = btn.parentElement;
 
-if (params.get("name")) {
-  document.getElementById("card").innerHTML = `
-    <div class="card">
-      <img src="${params.get("img") || ''}" />
-      <h2>🏆 Happy Work Anniversary</h2>
-      <h3>${params.get("name")}</h3>
-      <p>🎯 ${params.get("years")} Years</p>
-      <p>💬 ${params.get("msg")}</p>
-      <p>— From ${params.get("from")}</p>
-    </div>
-  `;
+  html2canvas(card).then(canvas => {
+    const link = document.createElement("a");
+    link.download = "work-anniversary.png";
+    link.href = canvas.toDataURL();
+    link.click();
+  });
 }
+
+// Add first employee by default
+addEmployee();
 </script>
 
 </body>
