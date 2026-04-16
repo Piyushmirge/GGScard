@@ -15,7 +15,11 @@
     
     <div id="personInputs" class="space-y-4"></div>
 
-    <button onclick="addPersonInput()" class="bg-gray-700 text-white px-3 py-2 rounded hover:bg-gray-800 mb-4">➕ Add Person</button>
+    <button id="addPersonBtn">➕ Add Person</button>
+
+<script>
+  document.getElementById("addPersonBtn").addEventListener("click", addPersonInput);
+</script>
 
     <div class="space-y-2">
       <label class="block font-semibold">Select Joining Date:</label>
