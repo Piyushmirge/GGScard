@@ -1,0 +1,97 @@
+.profile-img {
+  width: 150px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 0.5rem;
+  margin: 0 auto;
+  border: 3px solid white;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+.card {
+  width: 850px;
+  min-height: 600px;
+  padding: 2rem;
+  margin: 2rem auto;
+  background: url(Happy_Anniversay.jpg) no-repeat center top / contain;
+  background-color: #000000; /* Changed to black background */
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.card.custom-bg {
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+.card.custom-bg .content-container {
+  background-color: rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  padding: 2rem;
+  margin-top: 50px;
+}
+
+.content-container {
+  margin-top: 150px; /* Push content down below the "Happy Work Anniversary" text in background */
+  padding: 2rem;
+  max-width: 90%;
+}
+
+/* Make most text white */
+.content-container * {
+  color: #ffffff !important;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.ggs-logo {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 100px;
+  height: 50px;
+  background-color: transparent !important;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 5px;
+  border-radius: 5px;
+  object-fit: contain;
+}
+
+.anniversary-text {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #ffffff;
+  margin: 1.5rem 0;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.message {
+  font-size: 1.2rem;
+  color: #ffffff;
+  line-height: 1.6;
+  margin-top: 1.5rem;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+/* Make name text black - this overrides the white text rule */
+.name-text, [class*="name"], .name, .profile-name {
+  font-size: 1.5rem;
+  font-weight: bold !important; /* Added !important to ensure bold styling */
+  color: #000000 !important; /* Black text for names */
+  margin-top: 0.5rem;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.8) !important; /* White shadow for black text */
+}
+
+/* Specifically target profile section names to be black and bold */
+#profileSection .name-text,
+#profileSection [class*="name"],
+#profileSection div:last-child {
+  color: #000000 !important;
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(255,255,255,0.8) !important;
+}

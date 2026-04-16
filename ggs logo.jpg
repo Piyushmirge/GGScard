@@ -1,0 +1,95 @@
+function generateCard() {
+  const nameInputs = document.querySelectorAll('.name-input');
+  const photoInputs = document.querySelectorAll('.photo-input');
+  const profileSection = document.getElementById('profileSection');
+  const outputDate = document.getElementById('outputDate');
+  const customMessage = document.getElementById('messageInput').value.trim();
+
+  const dateInput = document.getElementById('dateInput').value;
+  const date = new Date(dateInput);
+
+  if (!validateDate(dateInput, date)) {
+    return;
+  }
+
+  profileSection.innerHTML = '';
+
+  if (nameInputs.length === 0) {
+    alert("Please add at least one person.");
+    return;
+  }
+
+  for (let i = 0; i < nameInputs.length; i++) {
+    const name = nameInputs[i].value.trim();
+    const file = photoInputs[i].files[0];
+    if (!name || !file) {
+      alert("Please fill out both name and photo for each person.");
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const div = document.createElement('div');
+      div.innerHTML = `
+        <img src="${e.target.result}" class="profile-img"/>
+        <p class="name-text">${name}</p>
+      `;
+      profileSection.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  }
+  
+  const today = new Date();
+  const yearsOfService = today.getFullYear() - date.getFullYear();
+  const hasAnniversaryOccurred = 
+      today.getMonth() > date.getMonth() || 
+      (today.getMonth() === date.getMonth() && today.getDate() >= date.getDate());
+  const completedYears = hasAnniversaryOccurred ? yearsOfService : yearsOfService - 1;
+  
+  const displayYears = Math.max(0, completedYears);
+  
+  let anniversaryText;
+  if (displayYears === 0) {
+    anniversaryText = "Happy First Anniversary!";
+  } else {
+    anniversaryText = `Happy ${displayYears}${getOrdinalSuffix(displayYears)} Work Anniversary`;
+  }
+  
+  outputDate.innerHTML = anniversaryText;
+
+  document.getElementById('customMessage').textContent = customMessage || "Thank you for your hard work, loyalty, and innovation. You make this team better every day!";
+
+  // Apply custom background if one is uploaded
+  if (window.customBackground) {
+    const card = document.getElementById('card');
+    card.style.backgroundImage = `url(${window.customBackground})`;
+    card.classList.add('custom-bg');
+  }
+
+  document.getElementById('card').classList.remove('hidden');
+}
+
+function downloadCard() {
+  const card = document.getElementById('card');
+  if (card.classList.contains('hidden')) {
+    alert('Please generate a card first!');
+    return;
+  }
+
+  html2canvas(card, {
+    width: 850,
+    height: 600,
+    scale: 2,
+    useCORS: true,
+    allowTaint: true,
+    backgroundColor: null
+  }).then(canvas => {
+    const link = document.createElement('a');
+    link.download = 'anniversary_card.png';
+    link.href = canvas.toDataURL('image/png');
+    link.click();
+  }).catch(error => {
+    console.error('Error generating card:', error);
+    alert('Error generating card. Please try again.');
+  });
+}

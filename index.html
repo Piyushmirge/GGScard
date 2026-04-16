@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Anniversary Card Generator</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-gray-100 p-4">
+
+  <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow space-y-4">
+    <h1 class="text-3xl font-bold text-center">🎉 Anniversary Card Generator</h1>
+    
+    <div id="personInputs" class="space-y-4"></div>
+
+    <button onclick="addPersonInput()" class="bg-gray-700 text-white px-3 py-2 rounded hover:bg-gray-800 mb-4">➕ Add Person</button>
+
+    <div class="space-y-2">
+      <label class="block font-semibold">Select Joining Date:</label>
+      <input type="date" id="dateInput" class="w-full p-2 border rounded" max="" />
+    </div>
+
+    <div class="space-y-2">
+      <label class="block font-semibold mt-4">Upload Custom Background (Optional):</label>
+      <input type="file" id="backgroundInput" accept="image/*" class="w-full p-2 border rounded" onchange="handleBackgroundUpload(this)" />
+      <button onclick="resetBackground()" class="bg-red-500 text-white px-3 py-2 rounded hover:bg-red-600 text-sm">Reset to Default Background</button>
+    </div>
+
+    <div class="space-y-2">
+      <label class="block font-semibold mt-4">Enter Custom Anniversary Message:</label>
+      <textarea id="messageInput" class="w-full p-2 border rounded" rows="3" placeholder="Type your custom message here..."></textarea>
+    </div>
+
+    <div class="flex gap-4 mt-4">
+      <button onclick="generateCard()" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">Generate Card</button>
+      <button onclick="downloadCard()" class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">Download Card</button>
+    </div>
+  </div>
+
+  <div id="card" class="card hidden">
+    <div class="content-container">
+      <div id="profileSection" class="flex flex-wrap justify-center gap-8"></div>
+      <div id="outputDate" class="anniversary-text"></div>
+      <div id="customMessage" class="message"></div>
+    </div>
+    <img src="ggslogo.png" class="ggs-logo" alt="GGS Logo"/>
+  </div>
+
+  <!-- JavaScript Files -->
+  <script src="js/utils.js"></script>
+  <script src="js/personManager.js"></script>
+  <script src="js/cardGenerator.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>
